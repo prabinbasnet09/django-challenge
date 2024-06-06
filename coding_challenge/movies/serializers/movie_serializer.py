@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
 from movies.models import Movie
+from movies.serializers.review_serializer import ReviewSerializer
 
 
 class MovieSerializer(serializers.ModelSerializer):
     runtime_formatted = serializers.SerializerMethodField()
+    reviewers = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = Movie
         fields = (
@@ -12,7 +14,8 @@ class MovieSerializer(serializers.ModelSerializer):
             "title",
             "runtime",
             "release_date",
-            "runtime_formatted"
+            "runtime_formatted",
+            "reviewers"
         )
     
     def get_runtime_formatted(self, obj):
